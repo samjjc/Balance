@@ -29,3 +29,13 @@ func (b *Balancer) dispatch(req Request) {
 	// Put it into its place on the heap.
 	heap.Push(&b.pool, w)
 }
+
+// Job is complete; update heap
+func (b *Balancer) completed(w *Worker) {
+	// One fewer in the queue.
+	w.pending--
+	// Remove it from heap.
+	heap.Remove(&b.pool, w.index)
+	// Put it into its place on the heap.
+	heap.Push(&b.pool, w)
+}
