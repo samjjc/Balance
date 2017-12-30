@@ -6,7 +6,7 @@ type Worker struct {
 	index    int
 }
 
-func (w *Worker) work(done chan *Worker) {
+func (w *Worker) Work(done chan *Worker) {
 	for {
 		req := <-w.requests // get Request from balancer
 		req.c <- req.fn()   // call fn and send result

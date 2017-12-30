@@ -1,6 +1,7 @@
 package main
 
 import "container/heap"
+import "fmt"
 
 type Balancer struct {
 	pool Pool
@@ -13,6 +14,8 @@ func (b *Balancer) balance(work chan Request) {
 		case req := <-work: // received a Request...
 			b.dispatch(req) // ...so send it to a Worker
 		case w := <-b.done: // a worker has finished ...
+			// fmt.Printf("%d has %d tasks\n", w.index, w.pending)
+			fmt.Println(b.pool)
 			b.completed(w) // ...so update its info
 		}
 	}
