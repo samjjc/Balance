@@ -12,5 +12,11 @@ func main() {
 	pool := NewPool(5, done)
 	balancer := Balancer{*pool, done}
 	go balancer.balance(work)
+	// go func() {
+	// 	for {
+	// 		fmt.Println(pool)
+	// 		time.Sleep(time.Second)
+	// 	}
+	// }()
 	requester(work)
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math/rand"
 	"time"
 )
 
@@ -12,7 +13,8 @@ type Request struct {
 func requester(work chan<- Request) {
 	c := make(chan int, 5)
 	for {
-		time.Sleep(time.Second / 3)
+		randDuration := time.Duration(rand.Intn(300)) * time.Millisecond
+		time.Sleep(randDuration + 100*time.Millisecond)
 		select {
 		case work <- Request{workFunc, c}:
 		case <-c:
@@ -21,6 +23,7 @@ func requester(work chan<- Request) {
 }
 
 func workFunc() int {
-	time.Sleep(2 * time.Second)
+	randDuration := time.Duration(rand.Intn(4000)) * time.Millisecond
+	time.Sleep(randDuration + time.Second)
 	return 1
 }
