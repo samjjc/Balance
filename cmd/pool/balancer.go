@@ -3,6 +3,8 @@ package main
 import (
 	"container/heap"
 	"fmt"
+
+	"github.com/samjjc/basicLoadBalancer"
 )
 
 type Balancer struct {
@@ -10,7 +12,7 @@ type Balancer struct {
 	done chan *Worker
 }
 
-func (b *Balancer) balance(work chan Request) {
+func (b *Balancer) balance(work chan request.Request) {
 	for {
 		select {
 		case req := <-work: // received a Request
@@ -22,7 +24,7 @@ func (b *Balancer) balance(work chan Request) {
 }
 
 // Send Request to worker
-func (b *Balancer) dispatch(req Request) {
+func (b *Balancer) dispatch(req request.Request) {
 	w := heap.Pop(&b.pool).(*Worker)
 	w.requests <- req
 	w.pending++
