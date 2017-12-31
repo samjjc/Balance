@@ -12,7 +12,7 @@ func NewPool(size int, done chan *Worker) *Pool {
 	for i := 0; i < size; i++ {
 		requests := make(chan Request, 30)
 		worker := Worker{requests, 0, i}
-		go worker.Work(done)
+		go worker.work(done)
 		pool = append(pool, &worker)
 	}
 	heap.Init(&pool)

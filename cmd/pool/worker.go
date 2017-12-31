@@ -1,22 +1,20 @@
 package main
 
-import "log"
-
 type Worker struct {
 	requests chan Request
 	pending  int
 	index    int
 }
 
-func (w *Worker) Work(done chan *Worker) {
+func (w *Worker) work(done chan *Worker) {
 	var req Request
 
 	defer func() {
 		if err := recover(); err != nil {
-			log.Println("work failed:", err)
-			req.c <- -1
+			// log.Println("work failed:", err)
+			req.e <- err
 			done <- w
-			w.Work(done)
+			w.work(done)
 		}
 	}()
 
