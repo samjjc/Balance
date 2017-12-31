@@ -2,14 +2,16 @@ package main
 
 import (
 	"fmt"
+	"runtime"
 )
 
 func main() {
-	fmt.Println("Coming soon!!")
+	poolSize := runtime.GOMAXPROCS(0)
+	fmt.Printf("We got %d workers!!\n", poolSize)
 
 	work := make(chan Request)
 	done := make(chan *Worker)
-	pool := NewPool(5, done)
+	pool := NewPool(poolSize, done)
 	balancer := Balancer{*pool, done}
 	go balancer.balance(work)
 	// go func() {

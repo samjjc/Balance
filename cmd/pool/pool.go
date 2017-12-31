@@ -1,14 +1,16 @@
 package main
 
-import "container/heap"
-import "fmt"
+import (
+	"container/heap"
+	"fmt"
+)
 
 type Pool []*Worker
 
 func NewPool(size int, done chan *Worker) *Pool {
 	var pool Pool
 	for i := 0; i < size; i++ {
-		requests := make(chan Request, 25)
+		requests := make(chan Request, 30)
 		worker := Worker{requests, 0, i}
 		go worker.Work(done)
 		pool = append(pool, &worker)

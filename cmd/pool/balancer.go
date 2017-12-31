@@ -33,7 +33,7 @@ func (b *Balancer) dispatch(req Request) {
 // Job is complete; update heap
 func (b *Balancer) completed(w *Worker) {
 	w.pending--
-	fmt.Println(b.pool, "| REMOVE")
 	heap.Remove(&b.pool, w.index)
 	heap.Push(&b.pool, w)
+	fmt.Println(b.pool, "| REMOVE")
 }
