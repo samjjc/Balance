@@ -1,21 +1,17 @@
 package main
 
-import (
-	"github.com/samjjc/basicLoadBalancer"
-)
-
 type Worker struct {
-	requests chan request.Request
+	requests chan Request
 	pending  int
 	index    int
 }
 
 func (w *Worker) work(done chan *Worker) {
-	var req request.Request
+	var req Request
 
 	defer func() {
 		if err := recover(); err != nil {
-			req.E <- request.ErrorString{err.(string)}
+			req.E <- ErrorString{err.(string)}
 			done <- w
 			w.work(done)
 		}

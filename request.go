@@ -1,4 +1,4 @@
-package request
+package main
 
 import (
 	"log"
@@ -12,7 +12,7 @@ type Request struct {
 	E  chan error
 }
 
-func Requester(work chan<- Request) {
+func requester(work chan<- Request) {
 	c := make(chan int, 5)
 	e := make(chan error, 5)
 	for {
@@ -32,7 +32,7 @@ func Requester(work chan<- Request) {
 func workFunc() int {
 	randDuration := time.Duration(rand.Intn(4000)) * time.Millisecond
 	time.Sleep(randDuration)
-	if randDuration <= time.Millisecond*800 {
+	if randDuration <= time.Millisecond*400 {
 		panic("3 FAST 5 ME")
 	}
 	return 1
