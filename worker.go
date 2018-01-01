@@ -11,7 +11,7 @@ func (w *Worker) work(done chan *Worker) {
 
 	defer func() {
 		if err := recover(); err != nil {
-			req.E <- ErrorString{err.(string)}
+			req.e <- ErrorString{err.(string)}
 			done <- w
 			w.work(done)
 		}
@@ -19,7 +19,7 @@ func (w *Worker) work(done chan *Worker) {
 
 	for {
 		req = <-w.requests // get Request from balancer
-		req.C <- req.Fn()  // call fn and send result
+		req.c <- req.fn()  // call fn and send result
 		done <- w          // we've finished this request
 
 	}

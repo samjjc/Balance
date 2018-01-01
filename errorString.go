@@ -3,9 +3,9 @@ package main
 import "fmt"
 
 type ErrorString struct {
-	S string
+	s string
 }
 
 func (e ErrorString) Error() string {
-	return fmt.Sprintf("work failed: %s", e.S)
+	return fmt.Sprintf("work failed: %s", e.s)
 }

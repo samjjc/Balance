@@ -19,12 +19,17 @@ func NewPool(size int, done chan *Worker) *Pool {
 	return &pool
 }
 
-func (p Pool) String() (s string) {
-	s = "Pool: "
+func (p Pool) String() string {
+	s := "Pool: "
 	for _, v := range p {
 		s += fmt.Sprint(" ", v.pending)
 	}
 	return s
+}
+
+func (p Pool) isEmpty() bool {
+
+	return true
 }
 
 //implement heap interface
