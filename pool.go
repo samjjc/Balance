@@ -27,11 +27,6 @@ func (p Pool) String() string {
 	return s
 }
 
-func (p Pool) isEmpty() bool {
-
-	return true
-}
-
 //implement heap interface
 func (p Pool) Len() int {
 	return len(p)

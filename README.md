@@ -1,6 +1,6 @@
 # Basic Load Balancer
 
-Trivial Load balancers' performance compared (so far only a worker pool)
+A trivial load balancer that spreads tasks across a pool of workers, also know as a worker pool
 
 ## Worker Pool
 
