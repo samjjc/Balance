@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	compare := flag.Bool("compare", false, " compare laod balancer with single thread")
+	compare := flag.Bool("compare", false, " compare load balancer vs single thread speed")
 	flag.Parse()
 
 	poolSize := runtime.GOMAXPROCS(0)
@@ -22,24 +22,23 @@ func main() {
 
 	switch *compare {
 	case true:
-		distributedTime := makeTwentyRequests(work)
-		synchronousTime := singleThreadWork()
-		fmt.Println("Worker pool took", distributedTime, "to complete")
-		fmt.Println("Single thread took", synchronousTime, "to complete")
+		distributedTime := Benchmark(work)
+		synchronousTime := benchmarkSingleThread()
+		fmt.Printf("Worker pool of %d workers took %s to complete\n", poolSize, distributedTime)
+		fmt.Printf("Single thread took %s to complete\n", synchronousTime)
 	case false:
 		infiniteRequester(work)
 	}
-
 }
 
-func singleThreadWork() time.Duration {
+func benchmarkSingleThread() time.Duration {
 	singleWorker := make(chan Request, 20)
 
 	go func() {
 		for i := 0; i < 20; i++ {
 			req := <-singleWorker
-			req.c <- req.fn()
+			req.result <- req.job()
 		}
 	}()
-	return makeTwentyRequests(singleWorker)
+	return Benchmark(singleWorker)
 }

@@ -7,9 +7,9 @@ import (
 )
 
 type Request struct {
-	fn func() int
-	c  chan int
-	e  chan error
+	job    func() int
+	result chan int
+	err    chan error
 }
 
 func infiniteRequester(work chan<- Request) {
@@ -19,30 +19,17 @@ func infiniteRequester(work chan<- Request) {
 		randDuration := time.Duration(rand.Intn(300)) * time.Millisecond
 		time.Sleep(randDuration + 100*time.Millisecond)
 		select {
-		case work <- Request{randomWork, c, e}:
+		case work <- Request{randomJob, c, e}:
 		case <-c:
 			// here would be where you'd process the results
 		case err := <-e:
 			log.Printf("%v\n", err)
-			work <- Request{randomWork, c, e}
+			work <- Request{randomJob, c, e}
 		}
 	}
 }
 
-func makeTwentyRequests(work chan<- Request) time.Duration {
-	start := time.Now()
-	c := make(chan int, 10)
-	e := make(chan error, 5)
-	for i := 0; i < 20; i++ {
-		work <- Request{constantWork, c, e}
-	}
-	for i := 0; i < 20; i++ {
-		<-c
-	}
-	return time.Since(start)
-}
-
-func randomWork() int {
+func randomJob() int {
 	randDuration := time.Duration(rand.Intn(4000)) * time.Millisecond
 	time.Sleep(randDuration)
 	if randDuration <= time.Millisecond*400 {
@@ -51,7 +38,21 @@ func randomWork() int {
 	return 1
 }
 
-func constantWork() int {
+// Benchmark sends 20 requests and returns how long it takes for them to complete
+func Benchmark(work chan<- Request) time.Duration {
+	start := time.Now()
+	c := make(chan int, 5)
+	e := make(chan error, 5)
+	for i := 0; i < 20; i++ {
+		work <- Request{constantJob, c, e}
+	}
+	for i := 0; i < 20; i++ {
+		<-c
+	}
+	return time.Since(start)
+}
+
+func constantJob() int {
 	time.Sleep(200 * time.Millisecond)
 	return 1
 }
