@@ -1,5 +1,6 @@
 package main
 
+//Worker executes requests in it's queue
 type Worker struct {
 	requests chan Request
 	pending  int

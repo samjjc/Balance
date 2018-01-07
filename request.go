@@ -12,7 +12,8 @@ type Request struct {
 	err    chan error
 }
 
-func infiniteRequester(work chan<- Request) {
+//InfiniteRequester sends requests to the work channel every 0.1 to 0.4 seconds
+func InfiniteRequester(work chan<- Request) {
 	c := make(chan int, 5)
 	e := make(chan error, 5)
 	for {

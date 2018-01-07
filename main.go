@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	compare := flag.Bool("compare", false, " compare load balancer vs single thread speed")
+	compare := flag.Bool("compare", false, " compare load balancer vs single thread execution speed")
 	flag.Parse()
 
 	poolSize := runtime.GOMAXPROCS(0)
@@ -27,7 +27,7 @@ func main() {
 		fmt.Printf("Worker pool of %d workers took %s to complete\n", poolSize, distributedTime)
 		fmt.Printf("Single thread took %s to complete\n", synchronousTime)
 	case false:
-		infiniteRequester(work)
+		InfiniteRequester(work)
 	}
 }
 

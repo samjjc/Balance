@@ -5,8 +5,10 @@ import (
 	"fmt"
 )
 
+//Pool is a worker pool
 type Pool []*Worker
 
+//NewPool creates a new worker pool, and initializes the workers
 func NewPool(size int, done chan *Worker) *Pool {
 	var pool Pool
 	for i := 0; i < size; i++ {

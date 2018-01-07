@@ -5,6 +5,7 @@ import (
 	"fmt"
 )
 
+//Balancer is a basic load balancer
 type Balancer struct {
 	pool Pool
 	done chan *Worker
