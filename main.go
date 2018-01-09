@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"runtime"
-	"time"
 )
 
 func main() {
@@ -19,16 +18,4 @@ func main() {
 	balancer := Balancer{*pool, done, true}
 	go balancer.balance(work)
 	InfiniteRequester(work)
-}
-
-func benchmarkSingleThread() time.Duration {
-	singleWorker := make(chan Request, 20)
-
-	go func() {
-		for i := 0; i < 20; i++ {
-			req := <-singleWorker
-			req.result <- req.job()
-		}
-	}()
-	return Benchmark(singleWorker)
 }

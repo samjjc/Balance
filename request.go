@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+//Request job is executed by the worker and the result is sent on the result channel
 type Request struct {
 	job    func() int
 	result chan int
@@ -37,20 +38,6 @@ func randomJob() int {
 		panic("3 FAST 5 ME")
 	}
 	return 1
-}
-
-// Benchmark sends 20 requests and returns how long it takes for them to complete
-func Benchmark(work chan<- Request) time.Duration {
-	start := time.Now()
-	c := make(chan int, 5)
-	e := make(chan error, 5)
-	for i := 0; i < 20; i++ {
-		work <- Request{constantJob, c, e}
-	}
-	for i := 0; i < 20; i++ {
-		<-c
-	}
-	return time.Since(start)
 }
 
 func constantJob() int {
