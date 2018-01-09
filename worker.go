@@ -22,6 +22,6 @@ func (w *Worker) work(done chan *Worker) {
 		req = <-w.requests      // get Request from balancer
 		req.result <- req.job() // call fn and send result
 		done <- w               // we've finished this request
-
 	}
+
 }

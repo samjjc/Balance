@@ -54,6 +54,12 @@ func Benchmark(work chan<- Request) time.Duration {
 }
 
 func constantJob() int {
-	time.Sleep(200 * time.Millisecond)
+	time.Sleep(100 * time.Millisecond)
 	return 1
+}
+
+func fastJob() int {
+	y := rand.Intn(4000) / 5
+	x := 2 + 5/4 + y
+	return x
 }

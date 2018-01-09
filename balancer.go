@@ -9,6 +9,7 @@ import (
 type Balancer struct {
 	pool Pool
 	done chan *Worker
+	log  bool
 }
 
 func (b *Balancer) balance(work chan Request) {
@@ -28,7 +29,9 @@ func (b *Balancer) dispatch(req Request) {
 	w.requests <- req
 	w.pending++
 	heap.Push(&b.pool, w)
-	fmt.Println(b.pool, "| DISPATCHED")
+	if b.log {
+		fmt.Println(b.pool, "| DISPATCHED")
+	}
 }
 
 // Job is complete; update heap
@@ -36,5 +39,7 @@ func (b *Balancer) completed(w *Worker) {
 	w.pending--
 	heap.Remove(&b.pool, w.index)
 	heap.Push(&b.pool, w)
-	fmt.Println(b.pool, "| COMPLETED")
+	if b.log {
+		fmt.Println(b.pool, "| COMPLETED")
+	}
 }
