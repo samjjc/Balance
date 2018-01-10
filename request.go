@@ -13,25 +13,25 @@ type Request struct {
 	err    chan error
 }
 
-//InfiniteRequester sends requests to the work channel every 0.1 to 0.4 seconds
-func InfiniteRequester(work chan<- Request) {
+//InfiniteRequester sends custom requests to the work channel every 0.1 to 0.4 seconds
+func InfiniteRequester(work chan<- Request, job func() int) {
 	c := make(chan int, 5)
 	e := make(chan error, 5)
 	for {
 		randDuration := time.Duration(rand.Intn(300)) * time.Millisecond
 		time.Sleep(randDuration + 100*time.Millisecond)
 		select {
-		case work <- Request{randomJob, c, e}:
+		case work <- Request{job, c, e}:
 		case <-c:
 			// here would be where you'd process the results
 		case err := <-e:
 			log.Printf("%v\n", err)
-			work <- Request{randomJob, c, e}
+			work <- Request{job, c, e}
 		}
 	}
 }
 
-func randomJob() int {
+func randomFailingJob() int {
 	randDuration := time.Duration(rand.Intn(4000)) * time.Millisecond
 	time.Sleep(randDuration)
 	if randDuration <= time.Millisecond*400 {
@@ -47,6 +47,6 @@ func constantJob() int {
 
 func fastJob() int {
 	y := rand.Intn(4000) / 5
-	x := 2 + 5/4 + y
+	x := 2 * y
 	return x
 }

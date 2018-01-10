@@ -17,5 +17,5 @@ func main() {
 	pool := NewPool(*poolSize, done)
 	balancer := Balancer{*pool, done, true}
 	go balancer.balance(work)
-	InfiniteRequester(work)
+	InfiniteRequester(work, randomFailingJob)
 }
