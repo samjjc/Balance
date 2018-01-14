@@ -23,16 +23,15 @@ func normalBalancer(b *testing.B, job func() int) {
 	done := make(chan *Worker)
 	pool := NewPool(4, done)
 	balancer := Balancer{*pool, done, false}
-	b.ResetTimer()
 	go balancer.balance(work)
 	for n := 0; n < b.N; n++ {
-		FiniteRequests(work, job, 20)
+		FiniteRequests(work, job, 100)
 	}
 }
 
 func workSingleThread(b *testing.B, job func() int) {
-	jobsRepeats := 20
-	singleWorker := make(chan Request, 20)
+	jobsRepeats := 100
+	singleWorker := make(chan Request, 100)
 	for n := 0; n < b.N; n++ {
 		go func() {
 			for i := 0; i < jobsRepeats; i++ {

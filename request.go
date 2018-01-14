@@ -15,7 +15,7 @@ type Request struct {
 
 //InfiniteRequester sends custom requests to the work channel every 0.1 to 0.4 seconds
 func InfiniteRequester(work chan<- Request, job func() int) {
-	c := make(chan int, 5)
+	c := make(chan int, 25)
 	e := make(chan error, 5)
 	for {
 		randDuration := time.Duration(rand.Intn(300)) * time.Millisecond
@@ -46,7 +46,7 @@ func constantJob() int {
 }
 
 func fastJob() int {
-	y := rand.Intn(4000) / 5
+	y := rand.Intn(1000)
 	x := 2 * y
 	return x
 }

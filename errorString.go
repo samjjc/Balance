@@ -8,5 +8,5 @@ type ErrorString struct {
 }
 
 func (e ErrorString) Error() string {
-	return fmt.Sprintf("Work Failed: %s", e.s)
+	return fmt.Sprintf("Error: %s", e.s)
 }
