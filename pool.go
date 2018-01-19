@@ -25,7 +25,7 @@ func (p Pool) String() string {
 	s := "Pool: "
 	for _, v := range p {
 		s += fmt.Sprint(" ", v.pending)
-		s += fmt.Sprint(" ", len(v.requests))
+		// s += fmt.Sprint(" ", len(v.requests))
 	}
 	return s
 }
