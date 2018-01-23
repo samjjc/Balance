@@ -1,6 +1,10 @@
 package main
 
-import "testing"
+import (
+	"math/rand"
+	"testing"
+	"time"
+)
 
 func BenchmarkFastBalancer(b *testing.B) {
 	normalBalancer(b, fastJob)
@@ -52,4 +56,15 @@ func FiniteRequests(work chan<- Request, job func() int, size int) {
 	for i := 0; i < size; i++ {
 		<-c
 	}
+}
+
+func constantJob() int {
+	time.Sleep(100 * time.Millisecond)
+	return 1
+}
+
+func fastJob() int {
+	y := rand.Intn(1000)
+	x := 2 * y
+	return x
 }

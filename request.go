@@ -34,19 +34,8 @@ func InfiniteRequester(work chan<- Request, job func() int) {
 func randomFailingJob() int {
 	randDuration := time.Duration(rand.Intn(4000)) * time.Millisecond
 	time.Sleep(randDuration)
-	if randDuration <= time.Millisecond*400 {
+	if randDuration <= time.Millisecond*400 { //random failure
 		panic("3 FAST 5 ME")
 	}
 	return 1
-}
-
-func constantJob() int {
-	time.Sleep(100 * time.Millisecond)
-	return 1
-}
-
-func fastJob() int {
-	y := rand.Intn(1000)
-	x := 2 * y
-	return x
 }
