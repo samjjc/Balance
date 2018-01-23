@@ -1,4 +1,4 @@
-# Basic Load Balancer
+# Balance
 
 A trivial load balancer that spreads tasks across a pool of workers, also know as a worker pool
 
