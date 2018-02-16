@@ -12,7 +12,7 @@ type Pool []*Worker
 func NewPool(size int, done chan *Worker) *Pool {
 	var pool Pool
 	for i := 0; i < size; i++ {
-		requests := make(chan Request, 300)
+		requests := make(chan Request, 100)
 		worker := Worker{requests, 0, i}
 		go worker.work(done)
 		pool = append(pool, &worker)
